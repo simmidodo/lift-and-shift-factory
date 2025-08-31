@@ -1,5 +1,0 @@
-region         = "eu-west-2"
-windows_ami_id = "ami-xxxxxxxx"   # Windows Server 2022 in your region
-instance_type  = "t3.large"
-subnet_id      = "subnet-xxxxxxxx"
-sg_id          = "sg-xxxxxxxx"
