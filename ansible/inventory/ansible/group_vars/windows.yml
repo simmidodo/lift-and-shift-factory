@@ -1,0 +1,7 @@
+service_name: "Payments.Service"
+artifact_s3_uri: "s3://my-artifacts/payments-service/1.2.3/service.zip"
+install_dir: "C:\\Services\\Payments"
+env_vars:
+  ASPNETCORE_ENVIRONMENT: "Production"
+  CONNECTION_STRINGS__DB: "Server=tcp:xxx;Database=paydb;User Id=...;Password=..."
+health_check_url: "http://localhost:8080/healthz"
