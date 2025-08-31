@@ -1,0 +1,18 @@
+---
+- name: Roll back service
+  hosts: tag_Factory_true
+  gather_facts: no
+  vars: { tmp_zip: "C:\\deploy\\service.zip" }
+  tasks:
+    - amazon.aws.aws_s3:
+        bucket: "{{ artifact_s3_uri.split('/')[2] }}"
+        object: "{{ artifact_s3_uri.split('/', 3)[3] }}"
+        dest: "{{ tmp_zip }}"
+        mode: get
+    - community.windows.win_unzip:
+        src: "{{ tmp_zip }}"
+        dest: "{{ install_dir }}"
+        delete_archive: true
+    - ansible.windows.win_service:
+        name: "{{ service_name }}"
+        state: restarted
