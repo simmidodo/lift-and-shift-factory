@@ -1,0 +1,44 @@
+---
+- name: Deploy Windows service
+  hosts: tag_Factory_true
+  gather_facts: no
+  vars: { tmp_zip: "C:\\deploy\\service.zip" }
+  tasks:
+    - name: Ensure install dir exists
+      ansible.windows.win_file:
+        path: "{{ install_dir }}"
+        state: directory
+
+    - name: Download artifact from S3
+      amazon.aws.aws_s3:
+        bucket: "{{ artifact_s3_uri.split('/')[2] }}"
+        object: "{{ artifact_s3_uri.split('/', 3)[3] }}"
+        dest: "{{ tmp_zip }}"
+        mode: get
+
+    - name: Unzip artifact
+      community.windows.win_unzip:
+        src: "{{ tmp_zip }}"
+        dest: "{{ install_dir }}"
+        delete_archive: true
+
+    - name: Set environment variables (machine)
+      ansible.windows.win_environment:
+        state: present
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        level: Machine
+      loop: "{{ env_vars | dict2items }}"
+
+    - name: Install/ensure service is running
+      ansible.windows.win_service:
+        name: "{{ service_name }}"
+        executable: "{{ install_dir }}\\Payments.Service.exe"
+        display_name: "{{ service_name }}"
+        start_mode: auto
+        state: started
+
+    - name: Health check
+      ansible.windows.win_uri:
+        url: "{{ health_check_url }}"
+        status_code: 200
