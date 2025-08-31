@@ -1,0 +1,10 @@
+plugin: amazon.aws.aws_ec2
+regions: [ "eu-west-2" ]
+keyed_groups: [ { key: tags } ]
+filters:
+  tag:Factory: "true"        # Only instances tagged Factory=true
+compose:
+  ansible_user: Administrator
+  ansible_connection: winrm
+  ansible_winrm_server_cert_validation: ignore
+  ansible_port: 5986
