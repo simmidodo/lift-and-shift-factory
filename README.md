@@ -27,3 +27,22 @@ Redeploy on-prem **Windows services** to **AWS** with:
 ---
 
 ## 1) Repository layout
+## 1) Repository layout
+
+```text
+.
+├── terraform/
+│   ├── main.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── user_data.ps1
+│   └── terraform.tfvars.example
+├── ansible/
+│   ├── inventory/aws_ec2.yml
+│   ├── group_vars/windows.yml
+│   └── playbooks/
+│       ├── deploy-windows-service.yml
+│       └── rollback.yml
+└── README.md
+
+
