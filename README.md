@@ -27,7 +27,6 @@ Redeploy on-prem **Windows services** to **AWS** with:
 ---
 
 ## 1) Repository layout
-## 1) Repository layout
 
 ```text
 .
